@@ -1,4 +1,4 @@
-package com.exercises.games;
+package com.algorithmicalligator.exercises.games;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;

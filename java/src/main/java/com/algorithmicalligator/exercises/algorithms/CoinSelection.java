@@ -1,4 +1,4 @@
-package com.exercises.algorithms;
+package com.algorithmicalligator.exercises.algorithms;
 
 import java.util.LinkedList;
 import java.util.List;

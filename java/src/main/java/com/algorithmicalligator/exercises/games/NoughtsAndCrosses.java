@@ -1,4 +1,4 @@
-package com.exercises.games;
+package com.algorithmicalligator.exercises.games;
 
 import java.util.HashMap;
 import java.util.HashSet;
