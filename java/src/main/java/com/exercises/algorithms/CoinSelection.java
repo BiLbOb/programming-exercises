@@ -1,10 +1,9 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+package com.exercises.algorithms;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NavigableSet;
-import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.IntStream;
 
 /**
  * Given a set of coin denominations `coins` and a total amount of money `total`, 
@@ -35,54 +34,37 @@ public class CoinSelection {
     //  but for large number of denominations, this could cause problems,
     //  so unwinding the recusion with a queue would be better in that case
 
-    private static int findBfsMinimumCoinCount(
-        int total,
-        NavigableSet<Integer> descendingDenominations
-    ) {
-        //  Start from highest denomination,
-        int highestDenom = descendingDenominations.first();
-        int maxCoinsForHighestDenom = total / highestDenom;
-        int remainderForMaxCoins =
-            total - maxCoinsForHighestDenom * highestDenom;
-        // If the biggest denom fits exactly, smaller demominations must require more coins in total
-        if (remainderForMaxCoins == 0) {
-            return maxCoinsForHighestDenom;
-        }
-        // Apply the same algorithm to the remainder, with the remaining denominations
-        NavigableSet<Integer> remainingDenominations =
-            descendingDenominations.tailSet(highestDenom, false);
-        if (remainingDenominations.isEmpty()) {
-            return -1;
-        }
-
-        // Repeat with 1 less coin of this denomination each time, finding the best result
-        //  (Descending because biggest-first will commonly work best)
-        int nCoinsMin = -1;
-        for (int n = maxCoinsForHighestDenom; n >= 0; n--) {
-            int remainderForNCoinsOfDenom = total - n * highestDenom;
-            int coinsForSmallerDenominatons = findBfsMinimumCoinCount(
-                remainderForNCoinsOfDenom,
-                remainingDenominations
-            );
-            if (coinsForSmallerDenominatons < 0) {
-                continue;
-            }
-            int totalCoinsThisTime = n + coinsForSmallerDenominatons;
-            if (nCoinsMin < 0 || totalCoinsThisTime < nCoinsMin) {
-                nCoinsMin = totalCoinsThisTime;
-            }
-        }
-        return nCoinsMin;
-    }
+    private record PartialSolution(Integer coinsSoFar, Integer totalRequired,  NavigableSet<Integer> denominations) {}
 
     public static int coinChange(int total, List<Integer> coins) {
         if (total == 0) {
             return 0;
         }
-        if (coins.isEmpty()) {
-            return -1;
-        }
-        TreeSet<Integer> denominations = new TreeSet<>(coins);
-        return findBfsMinimumCoinCount(total, denominations.descendingSet());
+        LinkedList<PartialSolution> queue = new LinkedList<>();
+        queue.add(new PartialSolution(0, total, new TreeSet<>(coins).descendingSet()));
+        int nCoinsMin = -1;
+        while (!queue.isEmpty()) {
+            //  Start from highest denomination,
+            PartialSolution partial = queue.removeFirst();
+            if (partial.denominations.isEmpty()) {
+                continue;
+            }
+            int highestDenom = partial.denominations.first();
+            int totalRequired = partial.totalRequired();
+            int maxCoinsForHighestDenom = totalRequired / highestDenom;
+            int remainderForMaxCoins =
+                totalRequired - maxCoinsForHighestDenom * highestDenom;
+            int coinsSoFar = partial.coinsSoFar();
+            // If the biggest denom fits exactly, smaller demominations must require more coins in total
+            if (remainderForMaxCoins == 0) {
+                return coinsSoFar + maxCoinsForHighestDenom; 
+            }
+            // Add all the options for using this denomination Nmax...0 times
+            NavigableSet<Integer> remainingDenominations = partial.denominations.tailSet(highestDenom, false);
+            for(int i = maxCoinsForHighestDenom; i >= 0; i--) {
+                queue.add(new PartialSolution(coinsSoFar + i, total - i * highestDenom, remainingDenominations));
+            }
+        };
+        return nCoinsMin;
     }
 }
