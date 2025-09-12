@@ -1,0 +1,54 @@
+# Java
+java/target/
+java/*.jar
+java/*.war
+java/*.ear
+java/.classpath
+java/.project
+java/.settings/
+
+# JavaScript/Node.js
+javascript/node_modules/
+javascript/npm-debug.log*
+javascript/yarn-debug.log*
+javascript/yarn-error.log*
+javascript/.npm
+javascript/.eslintcache
+javascript/coverage/
+
+# Python
+python/__pycache__/
+python/*.py[cod]
+python/*$py.class
+python/*.so
+python/.Python
+python/build/
+python/develop-eggs/
+python/dist/
+python/downloads/
+python/eggs/
+python/.eggs/
+python/lib/
+python/lib64/
+python/parts/
+python/sdist/
+python/var/
+python/wheels/
+python/*.egg-info/
+python/.installed.cfg
+python/*.egg
+python/MANIFEST
+python/.pytest_cache/
+python/.coverage
+python/htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
