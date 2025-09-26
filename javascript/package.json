@@ -4,7 +4,7 @@
   "description": "JavaScript implementations of programming exercises and algorithms",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/games/noughtsAndCrosses.js",
+    "start": "node src/algorithms/highestProductOfThreeNumbers.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
