@@ -13,7 +13,7 @@ describe('maximumProduct', () => {
         expect(maximumProduct([0, -1, -2, -3, -4])).toBe(0);
     });
 
-    test('should use the negative numbers when the product is greater than using the positive numbers', () => {
+    test('should use the negative numbers when the product is greater than using all positive numbers', () => {
         expect(maximumProduct([-10, 1, 3, -10, 2])).toBe(300);
     });
 
@@ -23,6 +23,10 @@ describe('maximumProduct', () => {
 
     test('should use the most negative numbers when the there are multiple negative numbers and these produce the biggest product', () => {
         expect(maximumProduct([-7, -10, 1, 3, -2, 2, -10])).toBe(300);
+    });
+
+    test('should use the negative numbers when the product is greater than the product of the 2nd and 3rd biggest positive numbers', () => {
+        expect(maximumProduct([-10, 9, 12, -8, 7])).toBe(10 * 8 * 12);
     });
 
     test('should throw an error when less than three numbers provided', () => {

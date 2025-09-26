@@ -45,17 +45,15 @@ function maximumProduct(arr) {
     //  greater than the 3 most positive?
     if (negative.length >= 2) {
         const absolutes = negative.map(n => Math.abs(n));
-        console.log("Got some negative options: " + absolutes);
+        console.log("Got some negative options: [" + absolutes + "]");
         const compareTo = positive.slice(0, 3);
-        const smaller = compareTo.length > 1 ? compareTo.shift() : 1;
-        const bigger = compareTo.length > 1 ? compareTo.shift() : 1;
-        console.log("Comparing absolute values " + absolutes[1] + " * " + absolutes[0] +" to " + bigger + " * " + smaller);
+        const smaller = compareTo.length > 1 ? compareTo.pop() : 1;
+        const bigger = compareTo.length > 1 ? compareTo.pop() : 1;
+        console.log("Comparing absolute values " + absolutes[1] + " * " + absolutes[0] + " to " + bigger + " * " + smaller);
 
         if (absolutes[1] * absolutes[0] > smaller * bigger) {
-            const biggestAbsolutes = absolutes.slice(0,2).concat(positive);
-            biggestAbsolutes.sort((a, b) => b - a);
-            console.log("Negative options bigger absolute values " + biggestAbsolutes);
-            return biggestAbsolutes[0] * biggestAbsolutes[1] * biggestAbsolutes[2];
+            console.log("Negative options bigger absolute values: using [" + [compareTo[0], absolutes[1], absolutes[0]] + "]");
+            return compareTo[0] * absolutes[1] * absolutes[0];
         }
     }
 
