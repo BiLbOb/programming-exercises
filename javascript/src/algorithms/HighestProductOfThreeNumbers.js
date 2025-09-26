@@ -1,5 +1,5 @@
 function maximumProduct(arr) {
-    console.log("Initial array = [" + arr + "]");
+    
     if (arr.length < 3) throw new Error("Requires an array of at least 3 numbers, but got: [" + arr + "]");
 
     // The highest product will be the product of the 3 biggest numbers if positive 
@@ -29,11 +29,9 @@ function maximumProduct(arr) {
     );
     positive.sort((a, b) => b - a);
     negative.sort();
-    console.log("positive = [" + positive + "]");
-    console.log("negative = [" + negative + "]");
+    
     if (positive.length == 0) {
         if (includesZeros) {
-            console.log("No positive and some zeros, hence biggest is zero");
             return 0;
         }
         // If no positive numbers or zeros, there must be at least 3 negative numbers
@@ -45,14 +43,13 @@ function maximumProduct(arr) {
     //  greater than the 3 most positive?
     if (negative.length >= 2) {
         const absolutes = negative.map(n => Math.abs(n));
-        console.log("Got some negative options: [" + absolutes + "]");
+        
         const compareTo = positive.slice(0, 3);
         const smaller = compareTo.length > 1 ? compareTo.pop() : 1;
         const bigger = compareTo.length > 1 ? compareTo.pop() : 1;
-        console.log("Comparing absolute values " + absolutes[1] + " * " + absolutes[0] + " to " + bigger + " * " + smaller);
+        
 
         if (absolutes[1] * absolutes[0] > smaller * bigger) {
-            console.log("Negative options bigger absolute values: using [" + [compareTo[0], absolutes[1], absolutes[0]] + "]");
             return compareTo[0] * absolutes[1] * absolutes[0];
         }
     }
