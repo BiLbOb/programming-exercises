@@ -18,40 +18,37 @@ function spiralMatrix(matrix) {
     while (minCol <= maxCol && minRow <= maxRow) {
         // Run along the top (matrix[minRow][minCol] -> matrix[minRow][maxCol])
         for (var col = minCol; col <= maxCol; col++) {
-            console.log("adding matrix[" + minRow + "][" + col + "] along top");
             spiral.push(matrix[minRow][col]);
         }
         // ... increment minRow...
         minRow++;
-        if( minRow > maxRow ) break;
+        if (minRow > maxRow) break;
 
         // ... then down the right (matrix[minRow][maxCol] -> matrix[maxRow][maxCol])
         for (var row = minRow; row <= maxRow; row++) {
-            console.log("adding matrix[" + row + "][" + maxCol + "] down RHS");
             spiral.push(matrix[row][maxCol]);
         }
         //  decrement maxCol
         maxCol--;
-        if( minCol > maxCol ) break;
+        if (minCol > maxCol) break;
 
         // then along the bottom (matrix[maxRow][maxCol] -> matrix[maxRow][minCol])
         for (var col = maxCol; col >= minCol; col--) {
-            console.log("adding matrix[" + maxRow + "][" + col + "] along bottom");
             spiral.push(matrix[maxRow][col]);
         }
         //  decrement maxRow
         maxRow--;
-        if( minRow > maxRow ) break;
+        if (minRow > maxRow) break;
 
         // then go up the left hand side (matrix[maxRow][minCol] -> matrix[minRow][minCol])
         for (var row = maxRow; row >= minRow; row--) {
-            console.log("adding matrix[" + row + "][" + minCol + "] down LHS");
             spiral.push(matrix[row][minCol]);
         }
         //  increment minCol
         minCol++;
     }
     // repeat until (minCol > maxCol) OR (minRow > maxRow)
+ 
      return spiral;
 }
 
