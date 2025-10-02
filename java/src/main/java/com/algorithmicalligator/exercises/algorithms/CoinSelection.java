@@ -3,6 +3,7 @@ package com.algorithmicalligator.exercises.algorithms;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NavigableSet;
+import java.util.Optional;
 import java.util.TreeSet;
 
 /**
@@ -30,10 +31,6 @@ public class CoinSelection {
     // If biggest denom fits exactly, that must be the best fit
     //  as using smaller coins must require more coins
     //  so can discard the rest of this sub-tree
-    // Implemented recursively, for simplicity
-    //  but for large number of denominations, this could cause problems,
-    //  so unwinding the recusion with a queue would be better in that case
-
     private record PartialSolution(Integer coinsSoFar, Integer totalRequired,  NavigableSet<Integer> denominations) {}
 
     public static int coinChange(int total, List<Integer> coins) {
@@ -42,29 +39,59 @@ public class CoinSelection {
         }
         LinkedList<PartialSolution> queue = new LinkedList<>();
         queue.add(new PartialSolution(0, total, new TreeSet<>(coins).descendingSet()));
-        int nCoinsMin = -1;
+        Optional<Integer> bestSoFar = Optional.empty();  
         while (!queue.isEmpty()) {
             //  Start from highest denomination,
             PartialSolution partial = queue.removeFirst();
-            if (partial.denominations.isEmpty()) {
+            Optional<PartialSolution> bestGuess = Optional.of(new PartialSolution(partial.coinsSoFar, partial.totalRequired, partial.denominations()));
+            for (Integer denom : partial.denominations) {
+                int totalRequired = bestGuess.get().totalRequired();
+                int maxCoinsForThisDenom = totalRequired / denom;
+                int remainderForMaxCoins = totalRequired - maxCoinsForThisDenom * denom;
+                int nextCount = bestGuess.get().coinsSoFar() + maxCoinsForThisDenom;
+                // No point continuing this path if it's already worse than the best so far
+                if (bestSoFar.isPresent() && nextCount >= bestSoFar.get()) {
+                    bestGuess = Optional.empty();
+                    break;
+                }
+                bestGuess = Optional.of(new PartialSolution(nextCount, remainderForMaxCoins, partial.denominations()));
+                if (remainderForMaxCoins == 0) {
+                    break;
+                }
+            }
+            if( !bestGuess.isPresent() ) {
+                // This path is already worse than the best so far
                 continue;
             }
-            int highestDenom = partial.denominations.first();
-            int totalRequired = partial.totalRequired();
-            int maxCoinsForHighestDenom = totalRequired / highestDenom;
-            int remainderForMaxCoins =
-                totalRequired - maxCoinsForHighestDenom * highestDenom;
-            int coinsSoFar = partial.coinsSoFar();
-            // If the biggest denom fits exactly, smaller demominations must require more coins in total
-            if (remainderForMaxCoins == 0) {
-                return coinsSoFar + maxCoinsForHighestDenom; 
+            PartialSolution guess = bestGuess.get();
+            if (guess.totalRequired() == 0 && (bestSoFar.isEmpty() || guess.coinsSoFar() < bestSoFar.get())) {
+                bestSoFar = Optional.of(guess.coinsSoFar());
+                // If the maximum number of the biggest denominations gives a solution, 
+                // this is the best possible solution of this partial - I think!!
+                continue;
             }
-            // Add all the options for using this denomination Nmax...0 times
-            NavigableSet<Integer> remainingDenominations = partial.denominations.tailSet(highestDenom, false);
-            for(int i = maxCoinsForHighestDenom; i >= 0; i--) {
-                queue.add(new PartialSolution(coinsSoFar + i, total - i * highestDenom, remainingDenominations));
+            
+            // Otherwise add new partial solutions for less of the highest denomination
+            if (partial.denominations.size() > 1) {
+                NavigableSet<Integer> remainingDenominations = partial
+                    .denominations
+                    .tailSet(partial.denominations.first(), false)
+                    .stream()
+                    .filter(d -> d < partial.totalRequired())
+                    .collect(TreeSet::new, TreeSet::add, TreeSet::addAll);
+                
+                if (remainingDenominations.size() > 0) {
+                    NavigableSet<Integer> remaining = remainingDenominations.descendingSet();
+                    Integer denom = partial.denominations.first();
+                    int maxCoinsForDenom = partial.totalRequired() / denom;
+                    for (int i = 0; i < maxCoinsForDenom; i++) {
+                        int remainderForICoins = partial.totalRequired() - i * denom;
+                        int coinsSoFar = partial.coinsSoFar + i;
+                        queue.push(new PartialSolution(coinsSoFar, remainderForICoins, remaining));
+                    }
+                }
             }
-        };
-        return nCoinsMin;
+        }
+        return bestSoFar.isPresent() ? bestSoFar.get() : -1;
     }
 }

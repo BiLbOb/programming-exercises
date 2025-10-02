@@ -30,4 +30,9 @@ class CoinSelectionTest {
     void shouldReturnMinusOne_whenTotalCanNotBeMadeFromDenominations() {
         assertEquals(-1, CoinSelection.coinChange(7, List.of(2, 6)));
     }
+
+    @Test
+    void shouldFindSolution_whenDenominationsAreLarge() { 
+        assertEquals(20, CoinSelection.coinChange(6249, List.of(186, 419, 83, 408)));
+    }
 }
