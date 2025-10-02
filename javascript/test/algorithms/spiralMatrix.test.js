@@ -1,4 +1,4 @@
-const spiralMatrix = require('../src/algorithms/spiralMatrix');
+const spiralMatrix = require('../../src/algorithms/spiralMatrix');
 
 describe('spiralMatrix', () => {
     test('given a 1x1 unit matrix then return [1]', () => {
