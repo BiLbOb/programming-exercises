@@ -1,0 +1,19 @@
+{
+    "folders": [
+        {
+            "name": "Java",
+            "path": "./java"
+        },
+        {
+            "name": "JavaScript", 
+            "path": "./javascript"
+        },
+        {
+            "name": "Python",
+            "path": "./python"
+        }
+    ],
+    "settings": {
+        "jest.disabledWorkspaceFolders": ["Java", "Python"]
+    }
+}
