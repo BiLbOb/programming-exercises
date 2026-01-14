@@ -10,7 +10,8 @@ This project is organized by programming language, with each language having its
 programming-exercises/
 ├── java/          # Java solutions using Maven
 ├── javascript/    # JavaScript/Node.js solutions using npm
-└── python/        # Python solutions using pip
+├── python/        # Python solutions using pip
+└── typescript/    # TypeScript solutions using npm
 ```
 
 Each language directory contains exercises organized by category:
@@ -44,6 +45,14 @@ python -m pytest
 python src/games/noughts_and_crosses.py
 ```
 
+### TypeScript
+```bash
+cd typescript
+npm install
+npm test
+npm start
+```
+
 ## Adding New Exercises
 
 1. Choose the appropriate language directory
@@ -57,3 +66,4 @@ python src/games/noughts_and_crosses.py
 - **Java**: Uses Maven for dependency management and build automation
 - **JavaScript**: Uses Node.js and npm for package management
 - **Python**: Uses pip for package management and pytest for testing
+- **TypeScript**: Uses npm for package management and Jest for testing
