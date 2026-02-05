@@ -35,6 +35,9 @@ python src/games/noughts_and_crosses.py
 
 ## Current Exercises
 
+### Algorithms
+- **Fibonacci** - Dynamic programming implementation of Fibonacci sequence generation
+
 ### Games
 - **Noughts and Crosses** - Coming soon (Python port of Java version)
 
